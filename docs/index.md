@@ -71,17 +71,17 @@ connection "openstack" {
 
     # The HTTP endpoint is REQUIRED to work with the Identity API of the appropriate version.
     # Can also be set with the environment variable "OS_AUTH_URL"
-    identity_endpoint = "http://example.com/identity/v3"
+    # identity_endpoint = "http://example.com/identity/v3"
 
     # Username is REQUIRED if using Identity V2 API.
     # For Identity V3, either UserID or a combination of Username and DomainID or DomainName is REQUIRED.
     # Can also be set with the environment variable "OS_USERNAME" and "OS_USER_ID"
-    username = "admin"
+    # username = "admin"
     # user_id = "d8e8fca2dc0f896fd7cb4cb0031ba249"
 
     # Password is REQUIRED and specifies the password of the user.
     # Can also be set with the environment variable "OS_PASSWORD"
-    password = "changeme"
+    # password = "changeme"
 
     # Passcode is OPTIONAL and used in TOTP authentication method.
     # Can also be set with the environment variable "OS_PASSCODE"
@@ -90,13 +90,13 @@ connection "openstack" {
     # At most one of DomainID and DomainName is REQUIRED if using Username with Identity V3.
     # Otherwise, either are OPTIONAL.
     # Can also be set with the environment variable "OS_DOMAIN_ID" and "OS_DOMAIN_NAME"
-    domain_id = "default"
+    # domain_id = "default"
     # domain_name = "Default"
 
     # The ProjectId or ProjectName is REQUIRED for Identity V3.
     # Some providers REQUIRE both.
     # Can also be set with the environment variable "OS_PROJECT_ID" and "OS_PROJECT_NAME".
-    project_id = "3e666015f769bf30cda73a1a1e9b794a"
+    # project_id = "3e666015f769bf30cda73a1a1e9b794a"
     # project_name = "my_project"
 
     # AllowReauth should be set to true if you want to cache your credentials 
@@ -108,17 +108,19 @@ connection "openstack" {
 }
 ```
 
-Environment variables are also available as an alternate configuration method:
+Alternatively, you can also use the standard OpenStack environment variables to obtain credentials **only if other arguments (`identity_endpoint`, `username`, `user_id`, `password`, `passcode`, `domain_id`, `domain_name`, `project_id` and `project_name`) are not specified** in the connection:
 
-- `OS_AUTH_URL`
-- `OS_USERNAME`
-- `OS_USER_ID`
-- `OS_PASSWORD`
-- `OS_PASSCODE`
-- `OS_DOMAIN_ID`
-- `OS_DOMAIN_NAME`
-- `OS_PROJECT_ID`
-- `OS_PROJECT_NAME`
+```sh
+export OS_AUTH_URL=http://example.com/identity/v3
+export OS_USERNAME=admin
+export USER_ID=d8e8fca2dc0f896fd7cb4cb0031ba249
+export OS_PASSWORD=changeme
+export OS_PASSCODE=123456
+export OS_DOMAIN_ID=default
+export OS_DOMAIN_NAME=Default
+export OS_PROJECT_ID=3e666015f769bf30cda73a1a1e9b794a
+export OS_PROJECT_NAME=my_project
+```
 
 ## Get involved
 
