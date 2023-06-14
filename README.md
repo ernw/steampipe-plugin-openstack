@@ -1,3 +1,5 @@
+![image](https://hub.steampipe.io/images/plugins/ernw/openstack-social-graphic.png)
+
 # OpenStack Plugin for Steampipe
 
 Use SQL to query cloud resources and their configuration from [OpenStack](https://www.openstack.org/).
@@ -32,14 +34,14 @@ connection "openstack" {
 }
 ```
 
-Environment variables are also available as an alternate configuration method:
+Or through environment variables:
 
-```bash
-export OS_AUTH_URL="http://example.com/identity/v3"
-export OS_USERNAME="admin"
-export OS_PASSWORD="changeme"
-export OS_DOMAIN_ID="default"
-export OS_PROJECT_ID="3e666015f769bf30cda73a1a1e9b794a"
+```sh
+export OS_AUTH_URL=http://example.com/identity/v3
+export OS_USERNAME=admin
+export OS_PASSWORD=changeme
+export OS_DOMAIN_ID=default
+export OS_PROJECT_ID=3e666015f769bf30cda73a1a1e9b794a
 ```
 
 Run steampipe:
@@ -53,7 +55,6 @@ Run a query:
 ```sql
 select
   name,
-  description,
   email,
   enabled
 from
