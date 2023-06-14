@@ -29,13 +29,13 @@ from
 ```
 
 ```
-+-------------------+-----------------------------+---------+
-| name              | email                       | enabled |
-+-------------------+-----------------------------+---------+
-| demo              | demo@example.com            | true    |
-| admin             | admin@testproject.com       | true    |
-| reader            | reader@testproject.com      | true    |
-+-------------------+-----------------------------+---------+
++-------------------+---------------------------+-----------------------------+---------+
+| name              | description               | email                       | enabled |
++-------------------+---------------------------+-----------------------------+---------+
+| demo              | This is the demo user     | demo@example.com            | true    |
+| admin             | This is the admin user    | admin@testproject.com       | true    |
+| reader            | This is the readonly user | reader@testproject.com      | true    |
++-------------------+---------------------------+-----------------------------+---------+
 ```
 
 ## Documentation
