@@ -80,7 +80,7 @@ func connect(ctx context.Context, d *plugin.QueryData) (*gophercloud.ProviderCli
 	// get ProviderClient struct
 	provider, err := openstack.AuthenticatedClient(opts)
 	if err != nil {
-		logger.Error("Connection properties were invalid or uncomplete", err)
+		logger.Error("Connection properties are invalid or incomplete", err)
 		return nil, err
 	}
 
