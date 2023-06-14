@@ -2,7 +2,7 @@
 organization: ERNW
 category: ["software development"]
 icon_url: "/images/plugins/ernw/openstack.svg"
-brand_color: "#ed1944"
+brand_color: "#DA1A32"
 display_name: OpenStack
 name: openstack
 description: Steampipe plugin to query cloud resource information from OpenStack deployments.
