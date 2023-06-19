@@ -7,7 +7,7 @@ display_name: OpenStack
 name: openstack
 description: Steampipe plugin to query cloud resource information from OpenStack deployments.
 og_description: Query OpenStack with SQL! Open source CLI. No DB required.
-og_image: "/images/plugins/ernw/openstack-graphic.png"
+og_image: "/images/plugins/ernw/openstack-social-graphic.png"
 ---
 
 # OpenStack + Steampipe
