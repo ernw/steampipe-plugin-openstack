@@ -104,11 +104,15 @@ connection "openstack" {
     # expires. This setting is OPTIONAL and defaults to false. 
     # allow_reauth = false
 
+    # Region specifies the endpoints geographic region. Required only for services that span
+    # multiple regions. Can also be set with the environment variable "OS_REGION".
+    # region = "RegionOne"
+
     # Further information: https://docs.openstack.org/python-openstackclient/latest/cli/authentication.html
 }
 ```
 
-Alternatively, you can also use the standard OpenStack environment variables to obtain credentials **only if other arguments (`identity_endpoint`, `username`, `user_id`, `password`, `passcode`, `domain_id`, `domain_name`, `project_id` and `project_name`) are not specified** in the connection:
+Alternatively, you can also use the standard OpenStack environment variables to obtain credentials **only if other arguments (`identity_endpoint`, `username`, `user_id`, `password`, `passcode`, `domain_id`, `domain_name`, `project_id`, `project_name` or `region`) are not specified** in the connection:
 
 ```sh
 export OS_AUTH_URL=http://example.com/identity/v3
@@ -120,6 +124,7 @@ export OS_DOMAIN_ID=default
 export OS_DOMAIN_NAME=Default
 export OS_PROJECT_ID=3e666015f769bf30cda73a1a1e9b794a
 export OS_PROJECT_NAME=my_project
+export OS_REGION=RegionOne
 ```
 
 ## Get involved

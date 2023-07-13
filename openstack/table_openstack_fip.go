@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/extensions/layer3/floatingips"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -50,7 +49,8 @@ func listFip(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 	}
 
 	// get network client from provider
-	networkClient, err := openstack.NewNetworkV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	networkClient, err := openstack.NewNetworkV2(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_fip.listFip", "connection_error", err)
@@ -85,7 +85,8 @@ func getFip(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (in
 	}
 
 	// get network client from provider
-	networkClient, err := openstack.NewNetworkV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	networkClient, err := openstack.NewNetworkV2(provider, endpointOpts)
 
 	// get floating IP (fip)
 	fip, err := floatingips.Get(networkClient, id).Extract()

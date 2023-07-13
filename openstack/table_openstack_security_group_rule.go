@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/extensions/security/rules"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -49,7 +48,8 @@ func listSecurityGroupRule(ctx context.Context, d *plugin.QueryData, _ *plugin.H
 	}
 
 	// get network client from provider
-	networkClient, err := openstack.NewNetworkV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	networkClient, err := openstack.NewNetworkV2(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_security_group_rule.listSecurityGroupRule", "connection_error", err)
@@ -84,7 +84,8 @@ func getSecurityGroupRule(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 	}
 
 	// get network client from provider
-	networkClient, err := openstack.NewNetworkV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	networkClient, err := openstack.NewNetworkV2(provider, endpointOpts)
 
 	// get security group rule
 	rule, err := rules.Get(networkClient, id).Extract()

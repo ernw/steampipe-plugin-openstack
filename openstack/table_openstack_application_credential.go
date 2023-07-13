@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/identity/v3/applicationcredentials"
 	"github.com/gophercloud/gophercloud/openstack/identity/v3/users"
@@ -55,7 +54,8 @@ func listApplicationCredential(ctx context.Context, d *plugin.QueryData, _ *plug
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_application_credential.listApplicationCredential", "connection_error", err)
@@ -102,7 +102,8 @@ func getApplicationCredential(ctx context.Context, d *plugin.QueryData, h *plugi
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 
 	// get application credential for provided user id (user_id) and application credential id
 	applicationcredential, err := applicationcredentials.Get(identityClient, uid, id).Extract()

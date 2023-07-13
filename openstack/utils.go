@@ -16,7 +16,7 @@ func connect(ctx context.Context, d *plugin.QueryData) (*gophercloud.ProviderCli
 	logger := plugin.Logger(ctx)
 
 	// check cache for connection
-	cacheKey := "openstack"
+	cacheKey := "connection"
 	if cacheData, ok := d.ConnectionManager.Cache.Get(cacheKey); ok {
 		return cacheData.(*gophercloud.ProviderClient), nil
 	}
@@ -88,6 +88,30 @@ func connect(ctx context.Context, d *plugin.QueryData) (*gophercloud.ProviderCli
 	d.ConnectionManager.Cache.Set(cacheKey, provider)
 
 	return provider, nil
+}
+
+func getEndpointOpts(d *plugin.QueryData) gophercloud.EndpointOpts {
+
+	// check cache for endpointOpts
+	cacheKey := "endpointOpts"
+	if cacheData, ok := d.ConnectionManager.Cache.Get(cacheKey); ok {
+		return cacheData.(gophercloud.EndpointOpts)
+	}
+
+	endpointOpts := gophercloud.EndpointOpts{}
+
+	// get region from env var or config file
+	endpointOpts.Region = os.Getenv("OS_REGION")
+
+	openstackConfig := GetConfig(d.Connection)
+	if openstackConfig.Region != nil {
+		endpointOpts.Region = *openstackConfig.Region
+	}
+
+	// save to cache
+	d.ConnectionManager.Cache.Set(cacheKey, endpointOpts)
+
+	return endpointOpts
 }
 
 func getMapItemByKey(ctx context.Context, d *transform.TransformData) (interface{}, error) {

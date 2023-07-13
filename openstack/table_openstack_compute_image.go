@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/compute/v2/images"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -47,7 +46,8 @@ func listComputeImage(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 	}
 
 	// get compute client from provider
-	computeClient, err := openstack.NewComputeV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	computeClient, err := openstack.NewComputeV2(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_compute_image.listComputeImage", "connection_error", err)
@@ -82,7 +82,8 @@ func getComputeImage(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	}
 
 	// get compute client from provider
-	computeClient, err := openstack.NewComputeV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	computeClient, err := openstack.NewComputeV2(provider, endpointOpts)
 
 	// get image
 	image, err := images.Get(computeClient, id).Extract()
