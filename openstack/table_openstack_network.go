@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/networks"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -51,7 +50,8 @@ func listNetwork(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	// get network client from provider
-	networkClient, err := openstack.NewNetworkV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	networkClient, err := openstack.NewNetworkV2(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_network.listNetwork", "connection_error", err)
@@ -86,7 +86,8 @@ func getNetwork(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData)
 	}
 
 	// get network client from provider
-	networkClient, err := openstack.NewNetworkV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	networkClient, err := openstack.NewNetworkV2(provider, endpointOpts)
 
 	// get network
 	network, err := networks.Get(networkClient, id).Extract()

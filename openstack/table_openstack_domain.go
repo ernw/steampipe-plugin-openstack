@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/identity/v3/domains"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -42,7 +41,8 @@ func listDomain(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_domain.listDomain", "connection_error", err)
@@ -77,7 +77,8 @@ func getDomain(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) 
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 
 	// get domain
 	domain, err := domains.Get(identityClient, id).Extract()

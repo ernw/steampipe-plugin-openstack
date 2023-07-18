@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/blockstorage/v3/volumetypes"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -44,7 +43,8 @@ func listVolumeType(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	}
 
 	// get block storage client from provider
-	blockStorageClient, err := openstack.NewBlockStorageV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	blockStorageClient, err := openstack.NewBlockStorageV3(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_volume_type.listVolumeType", "connection_error", err)
@@ -79,7 +79,8 @@ func getVolumeType(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDa
 	}
 
 	// get block storage client from provider
-	blockStorageClient, err := openstack.NewBlockStorageV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	blockStorageClient, err := openstack.NewBlockStorageV3(provider, endpointOpts)
 
 	// get volume type
 	volumeType, err := volumetypes.Get(blockStorageClient, id).Extract()

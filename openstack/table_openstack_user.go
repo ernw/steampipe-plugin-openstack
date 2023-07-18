@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/identity/v3/users"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -47,7 +46,8 @@ func listUser(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_user.listUser", "connection_error", err)
@@ -83,7 +83,8 @@ func getUser(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (i
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 
 	// get user
 	user, err := users.Get(identityClient, id).Extract()

@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/servergroups"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -47,7 +46,8 @@ func listServerGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 	}
 
 	// get compute client from provider
-	computeClient, err := openstack.NewComputeV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	computeClient, err := openstack.NewComputeV2(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_server_group.listServerGroup", "connection_error", err)
@@ -82,7 +82,8 @@ func getServerGroup(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateD
 	}
 
 	// get compute client from provider
-	computeClient, err := openstack.NewComputeV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	computeClient, err := openstack.NewComputeV2(provider, endpointOpts)
 
 	// get server group
 	servergroup, err := servergroups.Get(computeClient, id).Extract()

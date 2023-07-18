@@ -36,5 +36,10 @@ connection "openstack" {
     # expires. This setting is OPTIONAL and defaults to false. 
     # allow_reauth = false
 
+    # Region specifies the endpoints geographic region. Required only for services that span
+    # multiple regions. Can also be set with the environment variable "OS_REGION".
+    # region = "RegionOne"
+
+
     # Further information: https://docs.openstack.org/python-openstackclient/latest/cli/authentication.html
 }

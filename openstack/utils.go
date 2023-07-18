@@ -16,7 +16,7 @@ func connect(ctx context.Context, d *plugin.QueryData) (*gophercloud.ProviderCli
 	logger := plugin.Logger(ctx)
 
 	// check cache for connection
-	cacheKey := "openstack"
+	cacheKey := "connection"
 	if cacheData, ok := d.ConnectionManager.Cache.Get(cacheKey); ok {
 		return cacheData.(*gophercloud.ProviderClient), nil
 	}
@@ -24,51 +24,50 @@ func connect(ctx context.Context, d *plugin.QueryData) (*gophercloud.ProviderCli
 	// get connection properties from env var or from config file if env var not present
 	openstackConfig := GetConfig(d.Connection)
 
-	var envIsPresent bool
 	opts := gophercloud.AuthOptions{}
 
-	opts.IdentityEndpoint, envIsPresent = os.LookupEnv("OS_AUTH_URL")
-	if !envIsPresent && openstackConfig.IdentityEndpoint != nil {
+	opts.IdentityEndpoint = os.Getenv("OS_AUTH_URL")
+	if openstackConfig.IdentityEndpoint != nil {
 		opts.IdentityEndpoint = *openstackConfig.IdentityEndpoint
 	}
 
-	opts.Username, envIsPresent = os.LookupEnv("OS_USERNAME")
-	if !envIsPresent && openstackConfig.Username != nil {
+	opts.Username = os.Getenv("OS_USERNAME")
+	if openstackConfig.Username != nil {
 		opts.Username = *openstackConfig.Username
 	}
 
-	opts.UserID, envIsPresent = os.LookupEnv("OS_USER_ID")
-	if !envIsPresent && openstackConfig.UserID != nil {
+	opts.UserID = os.Getenv("OS_USER_ID")
+	if openstackConfig.UserID != nil {
 		opts.UserID = *openstackConfig.UserID
 	}
 
-	opts.Password, envIsPresent = os.LookupEnv("OS_PASSWORD")
-	if !envIsPresent && openstackConfig.Password != nil {
+	opts.Password = os.Getenv("OS_PASSWORD")
+	if openstackConfig.Password != nil {
 		opts.Password = *openstackConfig.Password
 	}
 
-	opts.Passcode, envIsPresent = os.LookupEnv("OS_PASSCODE")
-	if !envIsPresent && openstackConfig.Passcode != nil {
+	opts.Passcode = os.Getenv("OS_PASSCODE")
+	if openstackConfig.Passcode != nil {
 		opts.Passcode = *openstackConfig.Passcode
 	}
 
-	opts.DomainID, envIsPresent = os.LookupEnv("OS_DOMAIN_ID")
-	if !envIsPresent && openstackConfig.DomainID != nil {
+	opts.DomainID = os.Getenv("OS_DOMAIN_ID")
+	if openstackConfig.DomainID != nil {
 		opts.DomainID = *openstackConfig.DomainID
 	}
 
-	opts.DomainName, envIsPresent = os.LookupEnv("OS_DOMAIN_NAME")
-	if !envIsPresent && openstackConfig.DomainName != nil {
+	opts.DomainName = os.Getenv("OS_DOMAIN_NAME")
+	if openstackConfig.DomainName != nil {
 		opts.DomainName = *openstackConfig.DomainName
 	}
 
-	opts.TenantID, envIsPresent = os.LookupEnv("OS_PROJECT_ID")
-	if !envIsPresent && openstackConfig.ProjectID != nil {
+	opts.TenantID = os.Getenv("OS_PROJECT_ID")
+	if openstackConfig.ProjectID != nil {
 		opts.TenantID = *openstackConfig.ProjectID
 	}
 
-	opts.TenantName, envIsPresent = os.LookupEnv("OS_PROJECT_NAME")
-	if !envIsPresent && openstackConfig.ProjectName != nil {
+	opts.TenantName = os.Getenv("OS_PROJECT_NAME")
+	if openstackConfig.ProjectName != nil {
 		opts.TenantName = *openstackConfig.ProjectName
 	}
 
@@ -88,6 +87,30 @@ func connect(ctx context.Context, d *plugin.QueryData) (*gophercloud.ProviderCli
 	d.ConnectionManager.Cache.Set(cacheKey, provider)
 
 	return provider, nil
+}
+
+func getEndpointOpts(d *plugin.QueryData) gophercloud.EndpointOpts {
+
+	// check cache for endpointOpts
+	cacheKey := "endpointOpts"
+	if cacheData, ok := d.ConnectionManager.Cache.Get(cacheKey); ok {
+		return cacheData.(gophercloud.EndpointOpts)
+	}
+
+	endpointOpts := gophercloud.EndpointOpts{}
+
+	// get region from env var or config file
+	endpointOpts.Region = os.Getenv("OS_REGION")
+
+	openstackConfig := GetConfig(d.Connection)
+	if openstackConfig.Region != nil {
+		endpointOpts.Region = *openstackConfig.Region
+	}
+
+	// save to cache
+	d.ConnectionManager.Cache.Set(cacheKey, endpointOpts)
+
+	return endpointOpts
 }
 
 func getMapItemByKey(ctx context.Context, d *transform.TransformData) (interface{}, error) {

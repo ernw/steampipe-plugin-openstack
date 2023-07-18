@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/identity/v3/groups"
 	"github.com/gophercloud/gophercloud/openstack/identity/v3/users"
@@ -51,7 +50,8 @@ func listGroup(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) 
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 	if err != nil {
 		logger.Error("openstack_group.listGroup", "connection_error", err)
 		return nil, err
@@ -100,7 +100,8 @@ func getGroup(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 	if err != nil {
 		logger.Error("openstack_group.getGroup", "connection_error", err)
 		return nil, err

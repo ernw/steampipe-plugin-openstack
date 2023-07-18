@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/identity/v3/projects"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -46,7 +45,8 @@ func listProject(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_project.listProject", "connection_error", err)
@@ -81,7 +81,8 @@ func getProject(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData)
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 
 	// get project
 	project, err := projects.Get(identityClient, id).Extract()

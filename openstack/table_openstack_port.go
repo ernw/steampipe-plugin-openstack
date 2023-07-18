@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/networking/v2/ports"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -56,7 +55,8 @@ func listPort(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (
 	}
 
 	// get network client from provider
-	networkClient, err := openstack.NewNetworkV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	networkClient, err := openstack.NewNetworkV2(provider, endpointOpts)
 
 	if err != nil {
 		logger.Error("openstack_port.listPort", "connection_error", err)
@@ -91,7 +91,8 @@ func getPort(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (i
 	}
 
 	// get network client from provider
-	networkClient, err := openstack.NewNetworkV2(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	networkClient, err := openstack.NewNetworkV2(provider, endpointOpts)
 
 	// get port
 	port, err := ports.Get(networkClient, id).Extract()

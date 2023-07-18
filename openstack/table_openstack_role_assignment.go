@@ -3,7 +3,6 @@ package openstack
 import (
 	"context"
 
-	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	"github.com/gophercloud/gophercloud/openstack/identity/v3/roles"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -39,7 +38,8 @@ func listRoleAssignment(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 	}
 
 	// get identity client from provider
-	identityClient, err := openstack.NewIdentityV3(provider, gophercloud.EndpointOpts{})
+	endpointOpts := getEndpointOpts(d)
+	identityClient, err := openstack.NewIdentityV3(provider, endpointOpts)
 	if err != nil {
 		logger.Error("openstack_role_assignment.listRoleAssignment", "connection_error", err)
 		return nil, err

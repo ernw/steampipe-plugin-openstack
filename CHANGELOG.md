@@ -1,3 +1,8 @@
+## v0.0.3 [2023-07-13]
+
+- Added region support to connection parameters
+- Fixed config file connection parameters prioritisation
+
 ## v0.0.2 [2023-06-20]
 
 - Fixed social graphics icon

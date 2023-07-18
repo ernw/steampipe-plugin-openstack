@@ -16,6 +16,7 @@ type openstackConfig struct {
 	ProjectID        *string `cty:"project_id"`
 	ProjectName      *string `cty:"project_name"`
 	AllowReauth      *bool   `cty:"allow_reauth"`
+	Region           *string `cty:"region"`
 	// TODO: add authentication with application credentials
 }
 
@@ -49,6 +50,9 @@ var ConfigSchema = map[string]*schema.Attribute{
 	},
 	"allow_reauth": {
 		Type: schema.TypeBool,
+	},
+	"region": {
+		Type: schema.TypeString,
 	},
 }
 
