@@ -17,6 +17,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 		DefaultTransform: transform.FromGo().NullIfZero(),
 		TableMap: map[string]*plugin.Table{
 			"openstack_aggregate":              tableOpenstackAggregate(ctx),
+			"openstack_hypervisor":             tableOpenstackHypervisor(ctx),
 			"openstack_application_credential": tableOpenstackApplicationCredential(ctx),
 			"openstack_availability_zone":      tableOpenstackAvailabilityZone(ctx),
 			"openstack_compute_image":          tableOpenstackComputeImage(ctx),
