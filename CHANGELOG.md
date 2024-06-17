@@ -1,3 +1,7 @@
+## v.0.0.4 [2024-07-17]
+
+- Added hypervisor table [openstack_hypervisor](https://hub.steampipe.io/plugins/ernw/openstack/tables/openstack_hypervisor)
+
 ## v0.0.3 [2023-07-13]
 
 - Added region support to connection parameters
