@@ -1,4 +1,4 @@
-## v.0.0.4 [2024-07-17]
+## v0.0.4 [2024-07-17]
 
 - Added hypervisor table [openstack_hypervisor](https://hub.steampipe.io/plugins/ernw/openstack/tables/openstack_hypervisor)
 
