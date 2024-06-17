@@ -41,7 +41,7 @@ func tableOpenstackHypervisor(_ context.Context) *plugin.Table {
 			{Name: "cpu_arch", Type: proto.ColumnType_STRING, Description: "The arch of the CPU.", Transform: transform.FromField("CPUInfo.Arch")},
 			{Name: "cpu_model", Type: proto.ColumnType_STRING, Description: "The model of the CPU.", Transform: transform.FromField("CPUInfo.Model")},
 			{Name: "vcpus_used", Type: proto.ColumnType_INT, Description: "The number of used vcpus on the hypervisor.", Transform: transform.FromField("VCPUsUsed")},
-			{Name: "current_workload", Type: proto.ColumnType_INT, Description: "The number of tasks the hypervisor is responsible for."},
+			{Name: "current_workload", Type: proto.ColumnType_INT, Description: "The number of tasks the hypervisor is responsible for.", Transform: transform.FromField("CurrentWorkload")},
 			{Name: "status", Type: proto.ColumnType_STRING, Description: "Status of the hypervisor, either 'enabled' or 'disabled'."},
 			{Name: "disk_available_least", Type: proto.ColumnType_INT, Description: "The actual free disk on the hypervisor, measured in GB."},
 			{Name: "free_disk_gb", Type: proto.ColumnType_INT, Description: "The free disk remaining on the hypervisor, measured in GB.", Transform: transform.FromField("FreeDiskGB")},
